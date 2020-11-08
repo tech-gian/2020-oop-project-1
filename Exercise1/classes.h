@@ -31,10 +31,11 @@ class student {
 
     // Constructor
     // Dummy default values
-    student(string name="no", int floor_no=0, int class_no=0);
+    student(string name, int floor_no, int class_no);
     // Destructor
     ~student();
 
+    // Printing function
     void print(void) const;
 };
 
@@ -56,6 +57,7 @@ class teacher {
     teacher(string name, int floor_no, int class_no);
     // Destructor
     ~teacher();
+    // Printing function
     void print(void) const;
 };
 
@@ -66,21 +68,27 @@ class teacher {
 class classroom {
     int no;
     int st_no;
-    student* students;
-    teacher tchr;
+    student** students;
+    teacher* tchr;
+
+    int capacity;
 
     public:
 
-    classroom();
+    // Constructor
+    classroom(int cap, int no);
+    // Destructor
     ~classroom();
 
-    void enter();
+    // Entering function
+    bool enter(student& s);
+    // Printing function
     void print(void) const;
 };
 
 class corridor {
     int st_no;
-    student* students;
+    student** students;
 
     int capacity;
 
@@ -91,15 +99,17 @@ class corridor {
     // Destructor
     ~corridor();
 
-    void enter();
+    // Entering function
+    bool enter(student& s);
     void exit();
+    // Printing function
     void print(void) const;
 };
 
 
 class yard {
     int st_no;
-    student* students;
+    student** students;
 
     int capacity;
 
@@ -110,14 +120,16 @@ class yard {
     // Destructor
     ~yard();
 
-    void enter();
+    // Entering function
+    bool enter(student& s);
     void exit();
+    // Printing function
     void print(void) const;
 };
 
 class stairs {
     int st_no;
-    student* students;
+    student** students;
 
     int capacity;
 
@@ -128,15 +140,16 @@ class stairs {
     // Destructor
     ~stairs();
 
-    void enter();
+    // Entering function
+    bool enter(student& s);
     void exit();
+    // Printing function
     void print(void) const;
 };
 
 class flo {
     int no;
-    int cl_no;
-    classroom clsrm[6];
+    classroom* clsrm[6];
     // classroom c0;
     // classroom c1;
     // classroom c2;
@@ -144,31 +157,35 @@ class flo {
     // classroom c4;
     // classroom c5;
 
-    corridor cor;
+    corridor* cor;
 
     public:
 
-    flo();
+    // Constructor
+    flo(int cls_cap, int cor_cap, int no);
+    // Destructor
     ~flo();
 
     void enter();
+    // Printing function
     void print(void) const;
 };
 
 
 
 class school {
-    yard syard;
-    stairs sstairs;
-    flo sflo0;
-    flo sflo1;
-    flo sflo2;
+    yard* syard;
+    stairs* sstairs;
+    flo* sflo[3];
 
     public:
 
-    school();
+    // Constructor
+    school(int yard_cap, int st_cap, int cls_cap, int cor_cap);
+    // Destructor
     ~school();
 
     void enter();
+    // Printing Function
     void print(void) const;
 };
