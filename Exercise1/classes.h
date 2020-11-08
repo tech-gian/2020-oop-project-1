@@ -19,34 +19,48 @@ class student {
     int class_no;
 
     // Current position in school
-    string position;
+    // o -> out
+    // y -> yard
+    // s -> stairs
+    // f -> corridor
+    // c -> classroom
+    char position;
 
 
     public:
 
-    student();
+    // Constructor
+    // Dummy default values
+    student(string name="no", int floor_no=0, int class_no=0);
+    // Destructor
     ~student();
+
     void print(void) const;
 };
 
 
 class teacher {
     string name;    // Teacher's name
-    
+
     // Classroom data
     int floor_no;
     int class_no;
-    
+
     // Inside classroom or not
     bool in_class;
 
 
     public:
 
-    teacher();
+    // Constructor
+    teacher(string name, int floor_no, int class_no);
+    // Destructor
     ~teacher();
     void print(void) const;
 };
+
+
+
 
 
 class classroom {
@@ -68,9 +82,13 @@ class corridor {
     int st_no;
     student* students;
 
+    int capacity;
+
     public:
 
-    corridor();
+    // Constructor
+    corridor(int cap);
+    // Destructor
     ~corridor();
 
     void enter();
@@ -83,9 +101,13 @@ class yard {
     int st_no;
     student* students;
 
+    int capacity;
+
     public:
 
-    yard();
+    // Constructor
+    yard(int cap);
+    // Destructor
     ~yard();
 
     void enter();
@@ -97,9 +119,13 @@ class stairs {
     int st_no;
     student* students;
 
+    int capacity;
+
     public:
 
-    stairs();
+    // Constructor
+    stairs(int cap);
+    // Destructor
     ~stairs();
 
     void enter();
@@ -146,4 +172,3 @@ class school {
     void enter();
     void print(void) const;
 };
-
