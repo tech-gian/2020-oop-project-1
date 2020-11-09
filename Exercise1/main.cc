@@ -3,6 +3,7 @@
 //////////////////////////////////////////////
 
 
+// Header file included
 #include "classes.h"
 
 
@@ -19,6 +20,8 @@ int main(int argc, char* argv[]) {
     school scl(cyard, cstairs, cclass, ccor);
 
     // Reading data
+
+    // Students size
     int st_size;
     cin >> st_size;
     student** students = new student*[st_size];
@@ -30,6 +33,7 @@ int main(int argc, char* argv[]) {
         students[i] = new student(name, flo_no, cls_no);
     }
 
+    // Teacher size
     int tcr_size;
     cin >> tcr_size;
     teacher** teachers = new teacher*[tcr_size];
@@ -42,53 +46,54 @@ int main(int argc, char* argv[]) {
     }
 
 
-    // Srand
+    // Initialize srand
     srand(time(NULL));
 
 
+    // How many teachers out of classroom left
     int left = tcr_size;
     while (left > 0) {
+        // Random select if teacher or student going in
         if (rand() % 2 == 0) {
+            // Random select of student
             int pos = rand() % st_size;
             student* s = students[pos];
 
+            // If student is out
             if (s->get_pos() == 'o') {
                 scl.enter(*s);
             }
+            // If student in yard
             else if (s->get_pos() == 'y') {
                 if (scl.get_stairs().enter(*s)) {
                     scl.get_yard().exit(*s);
                 }
             }
+            // If student in stairs
             else if (s->get_pos() == 's') {
                 if (scl.get_flo(s->get_flo()).enter(*s)) {
                     scl.get_stairs().exit(*s);
                 }
             }
+            // If student in corridor (floor)
             else if (s->get_pos() == 'f') {
-                flo temp = scl.get_flo(s->get_flo());
-                if (temp.get_class(s->get_cls()).enter(*s)) {
+                flo* temp = &(scl.get_flo(s->get_flo()));
+                if (temp->get_class(s->get_cls()).enter(*s)) {
                     scl.get_flo(s->get_flo()).get_cor().exit(*s);
                 }
             }
         }
         else {
+            // Random select of teacher
             int pos = rand() % tcr_size;
             teacher* t = teachers[pos];
             
+            // If teacher isn't in the classroom
             if (!t->get_in()) {
                 scl.get_flo(t->get_flo()).get_class(t->get_cls()).place(*t);
                 left--;
             }
         }
-
-        // flag = false;
-        // for (int i=0 ; i<tcr_size ; i++) {
-        //     if (!teachers[i]->get_in()) {
-        //         flag = true;
-        //         break;
-        //     }
-        // }
     }
 
 

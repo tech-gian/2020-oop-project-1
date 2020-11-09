@@ -3,7 +3,7 @@
 //////////////////////////////////////////////
 
 
-// Library included
+// Libraries included
 #include <string>
 #include <iostream>
 #include <cstdlib>
@@ -13,6 +13,11 @@
 using namespace std;
 
 
+/////////////////
+// People classes
+
+
+// Student
 class student {
     string name;    // Student's name
 
@@ -32,7 +37,6 @@ class student {
     public:
 
     // Constructor
-    // Dummy default values
     student(string name, int floor_no, int class_no);
     // Destructor
     ~student();
@@ -50,6 +54,7 @@ class student {
 };
 
 
+// Teacher
 class teacher {
     string name;    // Teacher's name
 
@@ -81,15 +86,16 @@ class teacher {
 };
 
 
+/////////////////
+// School classes
 
 
-
+// Classroom
 class classroom {
     int no;
     int st_no;
     student** students;
     teacher* tchr;
-
     int capacity;
 
     public:
@@ -107,10 +113,11 @@ class classroom {
     void print(void) const;
 };
 
+
+// Corridor
 class corridor {
     int st_no;
     student** students;
-
     int capacity;
 
     public:
@@ -129,10 +136,10 @@ class corridor {
 };
 
 
+// Yard
 class yard {
     int st_no;
     student** students;
-
     int capacity;
 
     public:
@@ -150,10 +157,11 @@ class yard {
     void print(void) const;
 };
 
+
+// Stairs
 class stairs {
     int st_no;
     student** students;
-
     int capacity;
 
     public:
@@ -171,10 +179,11 @@ class stairs {
     void print(void) const;
 };
 
+
+// Floor
 class flo {
     int no;
     classroom* clsrm[6];
-
     corridor* cor;
 
     public:
@@ -195,7 +204,7 @@ class flo {
 };
 
 
-
+// School
 class school {
     yard* syard;
     stairs* sstairs;
