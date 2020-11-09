@@ -6,6 +6,8 @@
 // Library included
 #include <string>
 #include <iostream>
+#include <cstdlib>
+#include <ctime>
 
 
 using namespace std;
@@ -35,6 +37,14 @@ class student {
     // Destructor
     ~student();
 
+    // Setting position
+    void set_pos(char pos) { this->position = pos; }
+    // Getting position
+    char get_pos(void) const { return this->position; }
+    // Getting flo_no
+    int get_flo(void) const { return this->floor_no; }
+    // Getting class_no
+    int get_cls(void) const { return this->class_no; }
     // Printing function
     void print(void) const;
 };
@@ -57,6 +67,15 @@ class teacher {
     teacher(string name, int floor_no, int class_no);
     // Destructor
     ~teacher();
+
+    // Setting teacher in class
+    void set_in(void) { this->in_class = true; }
+    // Getting teacher in class
+    bool get_in(void) const { return this->in_class; }
+    // Getting flo_no
+    int get_flo(void) const { return this->floor_no; }
+    // Getting cls_no
+    int get_cls(void) const { return this->class_no; }
     // Printing function
     void print(void) const;
 };
@@ -104,7 +123,7 @@ class corridor {
     // Entering function
     bool enter(student& s);
     // Exiting function
-    student* exit(void);
+    student* exit(student& s);
     // Printing function
     void print(void) const;
 };
@@ -126,7 +145,7 @@ class yard {
     // Entering function
     bool enter(student& s);
     // Exiting function
-    student* exit(void);
+    student* exit(student& s);
     // Printing function
     void print(void) const;
 };
@@ -147,7 +166,7 @@ class stairs {
     // Entering function
     bool enter(student& s);
     // Exiting function
-    student* exit(void);
+    student* exit(student& s);
     // Printing function
     void print(void) const;
 };
@@ -167,6 +186,10 @@ class flo {
 
     // Entering function
     bool enter(student& s);
+    // Getting class
+    classroom& get_class(int no) const { return *(this->clsrm[no]); }
+    // Getting corridor
+    corridor& get_cor(void) const { return *(this->cor); }
     // Printing function
     void print(void) const;
 };
@@ -187,6 +210,12 @@ class school {
 
     // Entering function
     bool enter(student& s);
+    // Getting yard
+    yard& get_yard(void) const { return *(this->syard); }
+    // Getting stairs
+    stairs& get_stairs(void) const { return *(this->sstairs); }
+    // Getting floor
+    flo& get_flo(int no) const {return *(this->sflo[no]); }
     // Printing Function
     void print(void) const;
 };

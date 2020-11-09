@@ -65,7 +65,9 @@ void classroom::print(void) const {
         students[i]->print();
     }
 
-    tchr->print();
+    if (tchr != NULL) {
+        tchr->print();
+    }
 }
 
 classroom::classroom(int cap, int no) {
@@ -91,6 +93,7 @@ bool classroom::enter(student& s) {
 
     this->students[st_no] = &s;
     st_no++;
+    s.set_pos('c');
 
     s.print();
     cout << "...enters classroom!" << endl;
@@ -99,6 +102,9 @@ bool classroom::enter(student& s) {
 
 void classroom::place(teacher& t) {
     this->tchr = &t;
+    t.set_in();
+
+    cout << "A Teacher to be placed!" << endl;
 }
 
 
@@ -133,17 +139,29 @@ bool corridor::enter(student& s) {
 
     this->students[st_no] = &s;
     st_no++;
+    s.set_pos('f');
 
     s.print();
     cout << "...enters corridor!" << endl;
     return true;
 }
 
-student* corridor::exit(void) {
+student* corridor::exit(student& s) {
     if (st_no == 0) return NULL;
 
-    this->students[st_no-1]->print();
+    int pos;
+    for (int i=0 ; i<st_no ; i++) {
+        if (students[i] == &s) {
+            pos = i;
+            break;
+        }
+    }
+
+    this->students[pos]->print();
     cout << "...exits corridor!" << endl;
+    student* temp = students[pos];
+    students[pos] = students[st_no-1];
+    students[st_no-1] = temp;
     this->st_no--;
 
     return this->students[st_no];
@@ -182,7 +200,7 @@ flo::~flo() {
     for (int i=0 ; i<6 ; i++) {
         delete this->clsrm[i];
     }
-    delete[] this->clsrm;
+    // delete[] this->clsrm;
 
     cout << "A Floor to be destroyed!" << endl;
 }
@@ -228,17 +246,29 @@ bool stairs::enter(student& s) {
 
     this->students[st_no] = &s;
     st_no++;
+    s.set_pos('s');
 
     s.print();
     cout << "...enters stairs!" << endl;
     return true;
 }
 
-student* stairs::exit(void) {
+student* stairs::exit(student& s) {
     if (st_no == 0) return NULL;
 
-    this->students[st_no-1]->print();
+    int pos;
+    for (int i=0 ; i<st_no ; i++) {
+        if (students[i] == &s) {
+            pos = i;
+            break;
+        }
+    }
+
+    this->students[pos]->print();
     cout << "...exits stairs!" << endl;
+    student* temp = students[pos];
+    students[pos] = students[st_no-1];
+    students[st_no-1] = temp;
     this->st_no--;
 
     return this->students[st_no];
@@ -276,17 +306,29 @@ bool yard::enter(student& s) {
 
     this->students[st_no] = &s;
     st_no++;
+    s.set_pos('y');
 
     s.print();
     cout << "...enters schoolyard!" << endl;
     return true;
 }
 
-student* yard::exit(void) {
+student* yard::exit(student& s) {
     if (st_no == 0) return NULL;
 
-    this->students[st_no-1]->print();
+    int pos;
+    for (int i=0 ; i<st_no ; i++) {
+        if (students[i] == &s) {
+            pos = i;
+            break;
+        }
+    }
+
+    this->students[pos]->print();
     cout << "...exits schoolyard!" << endl;
+    student* temp = students[pos];
+    students[pos] = students[st_no-1];
+    students[st_no-1] = temp;
     this->st_no--;
 
     return this->students[st_no];
@@ -326,7 +368,7 @@ school::~school() {
     for (int i=0 ; i<3 ; i++) {
         delete this->sflo[i];
     }
-    delete[] sflo;
+    // delete[] sflo;
 
     cout << "A School to be destroyed!" << endl;
 }
