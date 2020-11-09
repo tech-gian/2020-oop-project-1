@@ -82,6 +82,8 @@ class classroom {
 
     // Entering function
     bool enter(student& s);
+    // Placing teacher function
+    void place(teacher& t);
     // Printing function
     void print(void) const;
 };
@@ -101,7 +103,8 @@ class corridor {
 
     // Entering function
     bool enter(student& s);
-    void exit();
+    // Exiting function
+    student* exit(void);
     // Printing function
     void print(void) const;
 };
@@ -122,7 +125,8 @@ class yard {
 
     // Entering function
     bool enter(student& s);
-    void exit();
+    // Exiting function
+    student* exit(void);
     // Printing function
     void print(void) const;
 };
@@ -142,7 +146,8 @@ class stairs {
 
     // Entering function
     bool enter(student& s);
-    void exit();
+    // Exiting function
+    student* exit(void);
     // Printing function
     void print(void) const;
 };
@@ -150,12 +155,6 @@ class stairs {
 class flo {
     int no;
     classroom* clsrm[6];
-    // classroom c0;
-    // classroom c1;
-    // classroom c2;
-    // classroom c3;
-    // classroom c4;
-    // classroom c5;
 
     corridor* cor;
 
@@ -166,7 +165,8 @@ class flo {
     // Destructor
     ~flo();
 
-    void enter();
+    // Entering function
+    bool enter(student& s);
     // Printing function
     void print(void) const;
 };
@@ -185,7 +185,8 @@ class school {
     // Destructor
     ~school();
 
-    void enter();
+    // Entering function
+    bool enter(student& s);
     // Printing Function
     void print(void) const;
 };

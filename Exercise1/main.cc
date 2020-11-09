@@ -6,17 +6,13 @@
 #include "classes.h"
 
 
-int main(void) {
+int main(int argc, char* argv[]) {
 
-    student s("John", 0, 1);
+    int cclass = atoi(argv[1]);
+    int cyard = atoi(argv[2]);
+    int cstairs = atoi(argv[3]);
+    int ccor = atoi(argv[4]);
 
-    teacher t("Nick", 3, 4);
-
-    student* s1 = new student("j", 5, 6);
-    delete s1;
-
-
-    cout << "Everything works fine" << endl;
 
     return 0;
 }

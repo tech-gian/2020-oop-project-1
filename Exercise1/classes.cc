@@ -97,6 +97,10 @@ bool classroom::enter(student& s) {
     return true;
 }
 
+void classroom::place(teacher& t) {
+    this->tchr = &t;
+}
+
 
 
 
@@ -133,6 +137,16 @@ bool corridor::enter(student& s) {
     s.print();
     cout << "...enters corridor!" << endl;
     return true;
+}
+
+student* corridor::exit(void) {
+    if (st_no == 0) return NULL;
+
+    this->students[st_no-1]->print();
+    cout << "...exits corridor!" << endl;
+    this->st_no--;
+
+    return this->students[st_no];
 }
 
 
@@ -173,6 +187,16 @@ flo::~flo() {
     cout << "A Floor to be destroyed!" << endl;
 }
 
+bool flo::enter(student& s) {
+    if (this->cor->enter(s) == true) {
+        s.print();
+        cout << "...enters floor!" << endl;
+        return true;
+    }
+
+    return false;
+}
+
 
 
 // Stairs Functions
@@ -208,6 +232,16 @@ bool stairs::enter(student& s) {
     s.print();
     cout << "...enters stairs!" << endl;
     return true;
+}
+
+student* stairs::exit(void) {
+    if (st_no == 0) return NULL;
+
+    this->students[st_no-1]->print();
+    cout << "...exits stairs!" << endl;
+    this->st_no--;
+
+    return this->students[st_no];
 }
 
 
@@ -248,6 +282,16 @@ bool yard::enter(student& s) {
     return true;
 }
 
+student* yard::exit(void) {
+    if (st_no == 0) return NULL;
+
+    this->students[st_no-1]->print();
+    cout << "...exits schoolyard!" << endl;
+    this->st_no--;
+
+    return this->students[st_no];
+}
+
 
 
 
@@ -286,3 +330,15 @@ school::~school() {
 
     cout << "A School to be destroyed!" << endl;
 }
+
+bool school::enter(student& s) {
+    if (this->syard->enter(s) == true) {
+        s.print();
+        cout << "...enters school!" << endl;
+        return true;
+    }
+
+    return false;
+}
+
+
