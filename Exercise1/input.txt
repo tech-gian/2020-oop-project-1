@@ -1,0 +1,15 @@
+10
+John 0 1
+Nick 1 2
+Maria 2 0
+Petros 2 0
+Kostas 1 0
+Filipos 1 4
+Stavros 1 4
+Vagelis 1 4
+Vasiliki 0 3
+Dimitris 0 3
+3
+Antonis 2 2
+Panagiotis 0 3
+Aggeliki 1 0
