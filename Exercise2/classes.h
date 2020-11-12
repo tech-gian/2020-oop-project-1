@@ -27,7 +27,7 @@ class child {
     child(string name, int class_no, char gender);
     // Destructor
     ~child();
-    // Getting child's gender
+    // Get child's gender
     char get_gen(void) const { return this->gender; }
     // Print child info
     void print(void) const;
@@ -46,6 +46,10 @@ class couple {
     couple(child* boy, child* girl);
     // Destructor
     ~couple();
+    
+    // Add extra child
+    void add_child(child* extra);
+    void print(void) const;
 
 };
 
@@ -57,11 +61,24 @@ class seq_chi {
     int size;           // Size of array
     int no;             // Sequence's number
 
+    // 'e' -> equal boys-girls
+    // 'b' -> last_couple boy
+    // 'g' -> last_couple girl
+    char gender;
+
     public:
     // Constructor
     seq_chi(child** children, int size, int no);
     // Destructor
     ~seq_chi();
+
+    // Get last_couple gender
+    char get_gen(void) const { return this->gender; }
+
+    child* move_extra_child(void);
+    // Merge extra with the last child
+    void merge_2_children(child* extra) { this->couples[this->size-1]->add_child(extra); };
+    void print(void) const;
 
 };
 
@@ -74,29 +91,12 @@ class seq_seq {
 
 
     public:
+    // Constructor
     seq_seq(seq_chi** seqs, int size);
+    // Destructor
     ~seq_seq();
+    void print(void) const;
 
 };
 
-
-
-
-// TO BE deleted
-// Classroom
-class classroom {
-    int no;             // Classroom's number
-    child** children;   // Sequence of students
-    int disorder;       // Degree of disorder
-
-
-    public:
-
-    classroom();
-    ~classroom();
-
-    void change();
-    void print();
-
-};
 
