@@ -14,7 +14,7 @@ OBJS = main.o classes.o
 EXEC = main
 
 # Arguments
-ARGS = 
+ARGS = 3 1 0.3 0.7
 
 $(EXEC): $(OBJS)
 	$(CC) $(OBJS) -o $(EXEC)
