@@ -49,8 +49,23 @@ void couple::add_child(child* extra) {
 
 void couple::print(void) const {
     cout << "Below children are a couple:" << endl;
-    this->boy->print();
-    this->girl->print();
+    if (this->boy != NULL) this->boy->print();
+    if (this->girl != NULL) this->girl->print();
+}
+
+child* couple::change(child* chi) {
+
+    child* temp;
+    if (chi->get_gen() == 'b') {
+        temp = this->boy;
+        this->boy = chi;
+    }
+    else {
+        temp = this->girl;
+        this->girl = chi;
+    }
+
+    return temp;
 }
 
 
@@ -147,7 +162,7 @@ void seq_chi::print(void) const {
 
 // Seq_seq Functions
 
-seq_seq::seq_seq(seq_chi** seqs, int size) {
+seq_seq::seq_seq(seq_chi** seqs, int size, int Tquiet, int Tmessy) {
 
     this->seqs = new seq_chi*[size];
 
@@ -194,6 +209,8 @@ seq_seq::seq_seq(seq_chi** seqs, int size) {
 
     // Define building blocks
     this->size = size;
+    this->Tquiet = Tquiet;
+    this->Tmessy = Tmessy;
 
     // Delete extra arrays, used for the algorithm
     delete[] boy;
@@ -210,19 +227,119 @@ seq_seq::~seq_seq() {
 
 void seq_seq::print(void) const {
     cout << "Below sequences are in a sequence of classrooms:" << endl;
+    cout << this->size << endl;
     for (int i=0 ; i<this->size ; i++) {
+        // SOMETHING WRONG IN HERE
+        // do multiple prints to find out why ?????????
         this->seqs[i]->print();
+
+        // Print Message for disorder
+        if (this->seqs[i]->get_dis() < Tquiet) {
+            cout << "What a quiet class!" << endl;
+        }
+        else if (this->seqs[i]->get_dis() > Tmessy) {
+            cout << "What a mess!" << endl;
+        }
+        else {
+            cout << "Please, be quiet!" << endl;
+        }
     }
 }
 
 void seq_seq::change(child** children, int len) {
-    // TODO
 
     int counter = 0;
     if (len <= 2) {
-        
+        // Loop for every child in children
+        // (max of 2 children)
+        for (int k=0 ; k<len ; k++) {
+            int no = children[k]->get_no();
+            couple** temp = this->seqs[no]->get_couples();
+
+            for (int i=0 ; i<this->seqs[no]->get_size() ; i++) {
+                if (temp[i]->check(children[k])) {
+                    if (i == 0) {
+                        child* chi = temp[i+1]->change(children[k]);
+                        temp[i]->change(chi);
+                    }
+                    else {
+                        child* chi = temp[i-1]->change(children[k]);
+                        temp[i]->change(chi);
+                    }
+                    this->seqs[no]->set_dis(1);
+                    break;
+                }
+            }
+        }
+
     }
     else {
+        // Check if there are consecutive or not
+        bool con = true;
+        int no = children[0]->get_no();
+        couple** temp = this->seqs[no]->get_couples();
+        for (int i=0 ; i<this->seqs[no]->get_size() ; i++) {
+            if (temp[i]->check(children[0])) {
+                for (int j=i+1 ; j<this->seqs[no]->get_size() ; j++) {
+                    if (!temp[j]->check(children[j-i])) {
+                        con = false;
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+
+        // Initialize srand
+        srand(time(NULL));
+
+        if (con) {
+            // Loop for every child in children
+            // if consecutive
+            for (int k=0 ; k<len ; k++) {
+                no = children[k]->get_no();
+                temp = this->seqs[no]->get_couples();
+                int new_no = rand() % this->size;
+
+                for (int i=0 ; i<this->seqs[no]->get_size() ; i++) {
+                    if (temp[i]->check(children[k])) {
+                        int ran = rand() % (this->seqs[new_no]->get_size());
+                        child* chi = this->seqs[new_no]->get_couples()[ran]->change(children[k]);
+                        temp[i]->change(chi);
+
+                        this->seqs[no]->set_dis(2);
+                        break;
+                    }
+                }
+            }
+
+        }
+        else {
+            // Loop for every child in children
+            // if not consecutive
+            for (int k=0 ; k<len ; k++) {
+                no = children[k]->get_no();
+                temp = this->seqs[no]->get_couples();
+                
+                for (int i=0 ; i<this->seqs[no]->get_size() ; i++) {
+                    if (temp[i]->check(children[k])) {
+                        if (no != this->size) {
+                            int ran = rand() % (this->seqs[no+1]->get_size());
+                            child* chi = this->seqs[no+1]->get_couples()[ran]->change(children[k]);
+                            temp[i]->change(chi);
+                        }
+                        else {
+                            int ran = rand() % (this->seqs[no-1]->get_size());
+                            child* chi = this->seqs[no-1]->get_couples()[ran]->change(children[k]);
+                            temp[i]->change(chi);
+                        }
+                        this->seqs[no]->set_dis(2);
+                        break;
+                    }
+                }
+            }
+        }
+
 
     }
 }

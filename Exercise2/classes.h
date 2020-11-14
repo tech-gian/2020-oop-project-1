@@ -6,6 +6,8 @@
 // Libraries included
 #include <string>
 #include <iostream>
+#include <cstdlib>
+#include <ctime>
 
 using namespace std;
 
@@ -29,6 +31,8 @@ class child {
     ~child();
     // Get child's gender
     char get_gen(void) const { return this->gender; }
+    // Get class_no
+    int get_no(void) const { return this->class_no; }
     // Print child info
     void print(void) const;
 
@@ -53,6 +57,11 @@ class couple {
     void add_child(child* extra);
     // Print couple
     void print(void) const;
+    // Check if child is here
+    bool check(child* chi) { return (chi==boy || chi==girl) ? true : false; }
+
+    // Change children
+    child* change(child* chi);
 
 };
 
@@ -78,6 +87,12 @@ class seq_chi {
 
     // Get last_couple gender
     char get_gen(void) const { return this->gender; }
+    // Get size
+    int get_size(void) const { return this->size; }
+    // Get disorderd
+    int get_dis(void) const { return this->disorder; }
+    // Add to disorder
+    void set_dis(int num) { this->disorder += num; }
 
     // Return last-alone child and resize couples
     child* move_extra_child(void);
@@ -85,6 +100,8 @@ class seq_chi {
     void merge_2_children(child* extra) { this->couples[this->size-1]->add_child(extra); };
     // Print each couple
     void print(void) const;
+    // Return couples
+    couple** get_couples(void) const { return this->couples; }
 
 };
 
@@ -95,10 +112,12 @@ class seq_seq {
     seq_chi** seqs;     // Array of seq_chi
     int size;           // Size of array
 
+    int Tquiet;         // Rate of disorder
+    int Tmessy;         // to print each message
 
     public:
     // Constructor
-    seq_seq(seq_chi** seqs, int size);
+    seq_seq(seq_chi** seqs, int size, int Tquiet, int Tmessy);
     // Destructor
     ~seq_seq();
 
