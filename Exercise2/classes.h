@@ -47,8 +47,11 @@ class couple {
     // Destructor
     ~couple();
     
+    // Return extra child
+    child* get_child(void) { return (boy==NULL) ? this->girl : this->boy; }
     // Add extra child
     void add_child(child* extra);
+    // Print couple
     void print(void) const;
 
 };
@@ -60,6 +63,7 @@ class seq_chi {
     couple** couples;   // Array of couple*
     int size;           // Size of array
     int no;             // Sequence's number
+    int disorder;       // Disorder in classroom
 
     // 'e' -> equal boys-girls
     // 'b' -> last_couple boy
@@ -75,9 +79,11 @@ class seq_chi {
     // Get last_couple gender
     char get_gen(void) const { return this->gender; }
 
+    // Return last-alone child and resize couples
     child* move_extra_child(void);
     // Merge extra with the last child
     void merge_2_children(child* extra) { this->couples[this->size-1]->add_child(extra); };
+    // Print each couple
     void print(void) const;
 
 };
@@ -95,6 +101,9 @@ class seq_seq {
     seq_seq(seq_chi** seqs, int size);
     // Destructor
     ~seq_seq();
+
+    void change(child** children, int len);
+    // Print sequences
     void print(void) const;
 
 };

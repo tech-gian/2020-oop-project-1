@@ -47,6 +47,11 @@ void couple::add_child(child* extra) {
     else this->girl = extra;
 }
 
+void couple::print(void) const {
+    cout << "Below children are a couple:" << endl;
+    this->boy->print();
+    this->girl->print();
+}
 
 
 // Seq_chi Functions
@@ -100,6 +105,7 @@ seq_chi::seq_chi(child** children, int size, int no) {
     // Define size of couples
     this->size = couples_size;
     this->no = no;
+    this->disorder = 0;
 
     cout << "A New Sequence_of_couples created" << endl;
 }
@@ -116,7 +122,25 @@ seq_chi::~seq_chi() {
 }
 
 child* seq_chi::move_extra_child(void) {
-    // TODO
+    child* temp = this->couples[this->size-1]->get_child();
+
+    delete this->couples[this->size-1];
+    couple** new_couples = new couple*[this->size-1];
+    this->size--;
+    for (int i=0 ; i<this->size ; i++) {
+        new_couples[i] = this->couples[i];
+    }
+    delete[] this->couples;
+    this->couples = new_couples;
+
+    return temp;
+}
+
+void seq_chi::print(void) const {
+    cout << "Below couples are in sequence " << this->no << endl;
+    for (int i=0 ; i<this->size ; i++) {
+        this->couples[i]->print();
+    }
 }
 
 
@@ -184,5 +208,23 @@ seq_seq::~seq_seq() {
     cout << "A Sequence_of_sequences to be destroyed" << endl;
 }
 
+void seq_seq::print(void) const {
+    cout << "Below sequences are in a sequence of classrooms:" << endl;
+    for (int i=0 ; i<this->size ; i++) {
+        this->seqs[i]->print();
+    }
+}
+
+void seq_seq::change(child** children, int len) {
+    // TODO
+
+    int counter = 0;
+    if (len <= 2) {
+        
+    }
+    else {
+
+    }
+}
 
 
