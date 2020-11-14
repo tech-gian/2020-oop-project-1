@@ -16,6 +16,34 @@ int main(int argc, char* argv[]) {
     double Tmessy = atof(argv[4]);
 
 
+    // Initialize srand
+    srand(time(NULL));
+
+
+    // Get data
+    int size;
+    cin >> size;
+    child** children = new child*[size];
+    for (int i=0 ; i<size ; i++) {
+        string str;
+        cin >> str;
+        int no = rand() % K;
+
+        children[i] = new child(str, no, (i%2==0) ? 'b' : 'g');
+    }
+
+
+
+
+
+
+
+    // Delete data
+    for (int i=0 ; i<size ; i++) {
+        delete children[i];
+    }
+    delete[] children;
+
 
     return 0;
 }
