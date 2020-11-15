@@ -14,7 +14,7 @@ OBJS = main.o classes.o
 EXEC = main
 
 # Arguments
-ARGS = 3 1 3 7 < input.txt
+ARGS = 3 10 3 7 < input.txt
 
 $(EXEC): $(OBJS)
 	$(CC) $(OBJS) -o $(EXEC)

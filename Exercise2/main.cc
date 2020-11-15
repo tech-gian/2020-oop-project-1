@@ -24,13 +24,24 @@ int main(int argc, char* argv[]) {
     int size;
     cin >> size;
     child** children = new child*[size];
+    int no = 0;
+    int counter = 0;
     for (int i=0 ; i<size ; i++) {
         string str;
         cin >> str;
-        int no = rand() % K;
+        // CHECK HERE
+        // CHANGE IT ??????????????
+        if (counter < size/K) {
+            counter++;
+        }
+        else {
+            no++;
+            counter = 0;
+        }
 
         children[i] = new child(str, no, (i%2==0) ? 'b' : 'g');
     }
+
 
     // Get children in K classrooms
     child*** chi_seq = new child**[K];
@@ -41,7 +52,7 @@ int main(int argc, char* argv[]) {
     for (int i=0 ; i<K ; i++) pos[i] = 0;
 
     for (int i=0 ; i<size ; i++) {
-        int temp = rand() % K;
+        int temp = children[i]->get_no();
         chi_seq[temp][pos[temp]] = children[i];
         pos[temp]++;
     }
@@ -49,9 +60,9 @@ int main(int argc, char* argv[]) {
     // Get children in sequences (classrooms)
     seq_chi** seqs = new seq_chi*[K];
     for (int i=0 ; i<K ; i++) {
-        seq_chi* temp = new seq_chi(chi_seq[i], pos[i], i);
-        seqs[i] = temp;
+        seqs[i] = new seq_chi(chi_seq[i], pos[i], i);
     }
+
 
     // Get sequences_of_classrooms in a sequence
     seq_seq* seq = new seq_seq(seqs, K, Tquiet, Tmessy);
@@ -60,14 +71,39 @@ int main(int argc, char* argv[]) {
     seq->print();
 
 
+    // Random children disorder
+    for (int k=0 ; k<L ; k++) {
+        int start = rand() % size;
+        int end = rand() % size;
+
+        if (end < start) {
+            int temp = start;
+            start = end;
+            end = start;
+        }
+
+        cout << start << " " << end << endl;
+        for (int i=start ; i<end ; i++) children[i]->print();
+        seq->change(children+start, end-start-1);
+    }
+
+
+    // Print how seq is now
+    seq->print();
 
 
 
     // Delete data
+    for (int i=0 ; i<size ; i++) {
+        delete children[i];
+    }
+    delete[] children;
+
     for (int i=0 ; i<K ; i++) {
         delete chi_seq[i];
     }
     delete[] chi_seq;
+
     delete[] pos;
 
     for (int i=0 ; i<K ; i++) {
@@ -75,13 +111,7 @@ int main(int argc, char* argv[]) {
     }
     delete[] seqs;
 
-    delete[] seq;
-
-    for (int i=0 ; i<size ; i++) {
-        delete children[i];
-    }
-    delete[] children;
-
+    delete seq;
 
     return 0;
 }

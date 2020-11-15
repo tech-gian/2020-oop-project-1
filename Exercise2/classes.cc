@@ -194,6 +194,8 @@ seq_seq::seq_seq(seq_chi** seqs, int size, int Tquiet, int Tmessy) {
             boy[i]->merge_2_children(temp);
             this->seqs[j] = boy[i];
             j++;
+            this->seqs[j] = girl[i];
+            j++;
         }
         else {
             if (boys > girls) {
@@ -229,8 +231,6 @@ void seq_seq::print(void) const {
     cout << "Below sequences are in a sequence of classrooms:" << endl;
     cout << this->size << endl;
     for (int i=0 ; i<this->size ; i++) {
-        // SOMETHING WRONG IN HERE
-        // do multiple prints to find out why ?????????
         this->seqs[i]->print();
 
         // Print Message for disorder
@@ -270,6 +270,9 @@ void seq_seq::change(child** children, int len) {
                     break;
                 }
             }
+
+            // Print sequence that changed
+            this->seqs[no]->print();
         }
 
     }
@@ -303,7 +306,7 @@ void seq_seq::change(child** children, int len) {
 
                 for (int i=0 ; i<this->seqs[no]->get_size() ; i++) {
                     if (temp[i]->check(children[k])) {
-                        int ran = rand() % (this->seqs[new_no]->get_size());
+                        int ran = rand() % (this->seqs[new_no]->get_size() - 1);
                         child* chi = this->seqs[new_no]->get_couples()[ran]->change(children[k]);
                         temp[i]->change(chi);
 
@@ -311,6 +314,9 @@ void seq_seq::change(child** children, int len) {
                         break;
                     }
                 }
+
+                // Print sequence that changed
+                this->seqs[no]->print();
             }
 
         }
@@ -320,16 +326,16 @@ void seq_seq::change(child** children, int len) {
             for (int k=0 ; k<len ; k++) {
                 no = children[k]->get_no();
                 temp = this->seqs[no]->get_couples();
-                
+
                 for (int i=0 ; i<this->seqs[no]->get_size() ; i++) {
                     if (temp[i]->check(children[k])) {
-                        if (no != this->size) {
-                            int ran = rand() % (this->seqs[no+1]->get_size());
+                        if (no < this->size-1) {
+                            int ran = rand() % (this->seqs[no+1]->get_size() - 1);
                             child* chi = this->seqs[no+1]->get_couples()[ran]->change(children[k]);
                             temp[i]->change(chi);
                         }
                         else {
-                            int ran = rand() % (this->seqs[no-1]->get_size());
+                            int ran = rand() % (this->seqs[no-1]->get_size() - 1);
                             child* chi = this->seqs[no-1]->get_couples()[ran]->change(children[k]);
                             temp[i]->change(chi);
                         }
@@ -337,6 +343,9 @@ void seq_seq::change(child** children, int len) {
                         break;
                     }
                 }
+
+                // Print sequence that changed
+                this->seqs[no]->print();
             }
         }
 
