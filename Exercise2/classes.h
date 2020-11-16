@@ -33,6 +33,8 @@ class child {
     char get_gen(void) const { return this->gender; }
     // Get class_no
     int get_no(void) const { return this->class_no; }
+    // Set class_no
+    int set_no(int no) { this->class_no = no; }
     // Print child info
     void print(void) const;
 
@@ -54,14 +56,14 @@ class couple {
     // Return extra child
     child* get_child(void) { return (boy==NULL) ? this->girl : this->boy; }
     // Add extra child
-    void add_child(child* extra);
+    void add_child(child* extra, int no);
     // Print couple
     void print(void) const;
     // Check if child is here
     bool check(child* chi) { return (chi==boy || chi==girl) ? true : false; }
 
     // Change children
-    child* change(child* chi);
+    child* change(child* chi, char gen);
 
 };
 
@@ -85,6 +87,8 @@ class seq_chi {
     // Destructor
     ~seq_chi();
 
+    // Get classroom no
+    int get_no(void) const { return this->no; }
     // Get last_couple gender
     char get_gen(void) const { return this->gender; }
     // Get size
@@ -97,7 +101,7 @@ class seq_chi {
     // Return last-alone child and resize couples
     child* move_extra_child(void);
     // Merge extra with the last child
-    void merge_2_children(child* extra) { this->couples[this->size-1]->add_child(extra); };
+    void merge_2_children(child* extra, int no) { this->couples[this->size-1]->add_child(extra, no); };
     // Print each couple
     void print(void) const;
     // Return couples
@@ -109,15 +113,15 @@ class seq_chi {
 
 // Sequence of sequences of couples
 class seq_seq {
-    seq_chi** seqs;     // Array of seq_chi
-    int size;           // Size of array
+    seq_chi** seqs;         // Array of seq_chi
+    int size;               // Size of array
 
-    int Tquiet;         // Rate of disorder
-    int Tmessy;         // to print each message
+    double Tquiet;          // Rate of disorder
+    double Tmessy;          // to print each message
 
     public:
     // Constructor
-    seq_seq(seq_chi** seqs, int size, int Tquiet, int Tmessy);
+    seq_seq(seq_chi** seqs, int size, double Tquiet, double Tmessy);
     // Destructor
     ~seq_seq();
 

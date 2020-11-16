@@ -12,8 +12,8 @@ int main(int argc, char* argv[]) {
     // Arguments from command line
     int K = atoi(argv[1]);
     int L = atoi(argv[2]);
-    int Tquiet = atoi(argv[3]);
-    int Tmessy = atoi(argv[4]);
+    double Tquiet = atof(argv[3]);
+    double Tmessy = atof(argv[4]);
 
 
     // Initialize srand
@@ -26,20 +26,24 @@ int main(int argc, char* argv[]) {
     child** children = new child*[size];
     int no = 0;
     int counter = 0;
+    bool flag = true;
     for (int i=0 ; i<size ; i++) {
         string str;
-        cin >> str;
-        // CHECK HERE
-        // CHANGE IT ??????????????
-        if (counter < size/K) {
+        cin >> str;        
+
+        children[i] = new child(str, no, (i%2==0) ? 'b' : 'g');
+
+        if (counter < size/K-1) {
             counter++;
+        }
+        else if (no < size%K && flag) {
+            flag = false;
         }
         else {
             no++;
             counter = 0;
+            flag = true;
         }
-
-        children[i] = new child(str, no, (i%2==0) ? 'b' : 'g');
     }
 
 
@@ -82,9 +86,8 @@ int main(int argc, char* argv[]) {
             end = start;
         }
 
-        cout << start << " " << end << endl;
         for (int i=start ; i<end ; i++) children[i]->print();
-        seq->change(children+start, end-start-1);
+        seq->change(children+start, end-start);
     }
 
 
@@ -95,7 +98,7 @@ int main(int argc, char* argv[]) {
 
     // Delete data
     for (int i=0 ; i<size ; i++) {
-        delete children[i];
+        if (children[i] != NULL) delete children[i];
     }
     delete[] children;
 
