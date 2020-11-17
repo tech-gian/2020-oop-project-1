@@ -33,7 +33,7 @@ class child {
     // Get class_no
     int get_no(void) const { return this->class_no; }
     // Set class_no
-    int set_no(int no) { this->class_no = no; }
+    void set_no(int no) { this->class_no = no; }
     // Print child info
     void print(void) const;
 };
