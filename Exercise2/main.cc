@@ -33,6 +33,7 @@ int main(int argc, char* argv[]) {
 
         children[i] = new child(str, no, (i%2==0) ? 'b' : 'g');
 
+        // Calculate number of classroom for this example input
         if (counter < size/K-1) {
             counter++;
         }
@@ -61,12 +62,12 @@ int main(int argc, char* argv[]) {
         pos[temp]++;
     }
 
+
     // Get children in sequences (classrooms)
     seq_chi** seqs = new seq_chi*[K];
     for (int i=0 ; i<K ; i++) {
         seqs[i] = new seq_chi(chi_seq[i], pos[i], i);
     }
-
 
     // Get sequences_of_classrooms in a sequence
     seq_seq* seq = new seq_seq(seqs, K, Tquiet, Tmessy);
@@ -86,6 +87,7 @@ int main(int argc, char* argv[]) {
             end = start;
         }
 
+        // Change the children, chosen in random
         for (int i=start ; i<end ; i++) children[i]->print();
         seq->change(children+start, end-start);
     }
@@ -93,7 +95,6 @@ int main(int argc, char* argv[]) {
 
     // Print how seq is now
     seq->print();
-
 
 
     // Delete data

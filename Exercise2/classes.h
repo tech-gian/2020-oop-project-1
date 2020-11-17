@@ -22,7 +22,6 @@ class child {
     // 'g' -> girl
     char gender;    // Child's gender
 
-
     public:
 
     // Constructor
@@ -37,7 +36,6 @@ class child {
     int set_no(int no) { this->class_no = no; }
     // Print child info
     void print(void) const;
-
 };
 
 
@@ -64,7 +62,6 @@ class couple {
 
     // Change children
     child* change(child* chi, char gen);
-
 };
 
 
@@ -106,7 +103,6 @@ class seq_chi {
     void print(void) const;
     // Return couples
     couple** get_couples(void) const { return this->couples; }
-
 };
 
 
@@ -125,10 +121,8 @@ class seq_seq {
     // Destructor
     ~seq_seq();
 
+    // Change children who create disorder
     void change(child** children, int len);
     // Print sequences
     void print(void) const;
-
 };
-
-

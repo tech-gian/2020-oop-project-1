@@ -7,6 +7,8 @@
 #include "classes.h"
 
 
+
+//////////////////
 // Child Functions
 
 child::child(string name, int class_no, char gender) {
@@ -14,35 +16,42 @@ child::child(string name, int class_no, char gender) {
     this->class_no = class_no;
     this->gender = gender;
 
+    // Assign items and print construction
     cout << "A New Child has been created" << endl;
     cout << this->name << " " << this->class_no << endl;
 }
 
 child::~child() {
+    // Print destruction
     cout << "A Child to be destroyed" << endl;
     cout << this->name << " " << endl;
 }
 
 void child::print(void) const {
+    // Print name of child
     cout << this->name << endl;
 }
 
 
 
+///////////////////
 // Couple Functions
 
 couple::couple(child* boy, child* girl) {
     this->boy = boy;
     this->girl = girl;
 
+    // Assign items and print construction
     cout << "A New Couple has been created" << endl;
 }
 
 couple::~couple() {
+    // Print construction
     cout << "A Couple to be destroyed" << endl;
 }
 
 void couple::add_child(child* extra, int no) {
+    // Add child, depending on its gender
     if (extra->get_gen() == 'b') {
         this->boy = extra;
         this->boy->set_no(no);
@@ -54,14 +63,18 @@ void couple::add_child(child* extra, int no) {
 }
 
 void couple::print(void) const {
+    // Print couple
     cout << "Below children are a couple:" << endl;
     if (this->boy != NULL) this->boy->print();
     if (this->girl != NULL) this->girl->print();
 }
 
 child* couple::change(child* chi, char gen) {
-
+    // Change boy or girl of the couple
+    // with chi
     child* temp;
+    
+    // If chi is NULL
     if (chi == NULL) {
         if (gen == 'g') {
             temp = this->girl;
@@ -74,6 +87,8 @@ child* couple::change(child* chi, char gen) {
         return temp;
     }
 
+    // Else check the gender of chi
+    // and change with the correspoding one
     if (chi->get_gen() == 'b') {
         if (this->boy != NULL) {
             temp = this->boy;
@@ -99,10 +114,12 @@ child* couple::change(child* chi, char gen) {
 }
 
 
+
+////////////////////
 // Seq_chi Functions
 
 seq_chi::seq_chi(child** children, int size, int no) {
-
+    // Divide children into boys and girls
     int i=0, j=0;
     child** boys = new child*[size];
     child** girls = new child*[size];
@@ -117,16 +134,19 @@ seq_chi::seq_chi(child** children, int size, int no) {
         }
     }
 
+    // Create couple** array
     int couples_size;
     if (i > j) couples_size = i;
     else couples_size = j;
     this->couples = new couple*[couples_size];
 
+    // Get all couples in the array
     for (int k=0 ; k<couples_size-1 ; k++) {
         couple* temp = new couple(boys[k], girls[k]);
         this->couples[k] = temp;
     }
 
+    // Check the last couple
     couple* temp;
     if (i == j) {
         temp = new couple(boys[i-1], girls[j-1]);
@@ -147,7 +167,7 @@ seq_chi::seq_chi(child** children, int size, int no) {
     delete[] boys;
     delete[] girls;
 
-    // Define size of couples
+    // Assign items and print construction
     this->size = couples_size;
     this->no = no;
     this->disorder = 0;
@@ -157,18 +177,21 @@ seq_chi::seq_chi(child** children, int size, int no) {
 
 
 seq_chi::~seq_chi() {
+    // Delete array
     for (int i=0 ; i<this->size ; i++) {
         delete this->couples[i];
     }
-
     delete[] this->couples;
 
+    // Print destruction
     cout << "A Sequence_of_couples to be destroyed" << endl;
 }
 
 child* seq_chi::move_extra_child(void) {
+    // Get the last couple's child
     child* temp = this->couples[this->size-1]->get_child();
 
+    // Delete the last couple and allocate new space for the rest
     delete this->couples[this->size-1];
     couple** new_couples = new couple*[this->size-1];
     this->size--;
@@ -178,10 +201,12 @@ child* seq_chi::move_extra_child(void) {
     delete[] this->couples;
     this->couples = new_couples;
 
+    // Return the extra_child
     return temp;
 }
 
 void seq_chi::print(void) const {
+    // Print the sequence of couples
     cout << "Below couples are in sequence " << this->no << endl;
     for (int i=0 ; i<this->size ; i++) {
         this->couples[i]->print();
@@ -190,15 +215,18 @@ void seq_chi::print(void) const {
 
 
 
+////////////////////
 // Seq_seq Functions
 
 seq_seq::seq_seq(seq_chi** seqs, int size, double Tquiet, double Tmessy) {
-
+    // Allocate array seqs
     this->seqs = new seq_chi*[size];
 
     seq_chi** boy = new seq_chi*[size];
     seq_chi** girl = new seq_chi*[size];
 
+    // Get all 'equal' sequences in the array
+    // and the extra_boy or extra_girl int boy or girl array
     int j = 0;
     int boys=0, girls=0;
     for (int i=0 ; i<size ; i++) {
@@ -216,6 +244,8 @@ seq_seq::seq_seq(seq_chi** seqs, int size, double Tquiet, double Tmessy) {
         }
     }
 
+    // Do the algorithm to fit the 'boy' and 'girl' sequence
+    // in the main array, with the instructions from the pronunciation
     int max_size = (boys>girls) ? boys : girls;
     int min_size = (girls>boys) ? boys : girls;
     for (int i=0 ; i<max_size ; i++) {
@@ -239,7 +269,7 @@ seq_seq::seq_seq(seq_chi** seqs, int size, double Tquiet, double Tmessy) {
         }
     }
 
-    // Define building blocks
+    // Assing building blocks and print construction
     this->size = size;
     this->Tquiet = Tquiet;
     this->Tmessy = Tmessy;
@@ -252,12 +282,14 @@ seq_seq::seq_seq(seq_chi** seqs, int size, double Tquiet, double Tmessy) {
 }
 
 seq_seq::~seq_seq() {
+    // Delete array and print destruction
     delete[] this->seqs;
 
     cout << "A Sequence_of_sequences to be destroyed" << endl;
 }
 
 void seq_seq::print(void) const {
+    // Print the sequence of sequences
     cout << "Below sequences are in a sequence of classrooms:" << endl;
     for (int i=0 ; i<this->size ; i++) {
         this->seqs[i]->print();
@@ -277,14 +309,17 @@ void seq_seq::print(void) const {
 }
 
 void seq_seq::change(child** children, int len) {
+    // Change children (array) with other children
+    // depending on the pronunciation
 
-    int counter = 0;
+    // If are max of 2 children in the array
     if (len <= 2) {
         // Loop for every child in children
         // (max of 2 children)
         for (int k=0 ; k<len ; k++) {
             int no = children[k]->get_no();
 
+            // Get the couple** array that every child belongs
             couple** temp;
             int pos;
             for (int i=0 ; i<this->size ; i++) {
@@ -295,6 +330,7 @@ void seq_seq::change(child** children, int len) {
                 }
             }
 
+            // Change each child with child from the same sequence
             for (int i=0 ; i<this->seqs[pos]->get_size() ; i++) {
                 if (temp[i]->check(children[k])) {
                     if (i == 0) {
@@ -319,9 +355,11 @@ void seq_seq::change(child** children, int len) {
     }
     else {
         // Check if there are consecutive or not
+        // (for more than 2 children)
         bool con = true;
         int no = children[0]->get_no();
 
+        // Get couple** array of the 1st child
         couple** temp;
         int pos;
         for (int i=0 ; i<this->size ; i++) {
@@ -332,6 +370,7 @@ void seq_seq::change(child** children, int len) {
             }
         }
 
+        // Check if all children are consecutively
         for (int i=0 ; i<this->seqs[pos]->get_size() ; i++) {
             if (temp[i]->check(children[i])) {
                 for (int j=i+1 ; j<this->seqs[pos]->get_size() ; j++) {
@@ -347,12 +386,13 @@ void seq_seq::change(child** children, int len) {
         // Initialize srand
         srand(time(NULL));
 
+        // Ιf consecutive
         if (con) {
             // Loop for every child in children
-            // if consecutive
             for (int k=0 ; k<len ; k++) {
                 no = children[k]->get_no();
 
+                // Get the couple** array of each child
                 for (int i=0 ; i<this->size ; i++) {
                     if (this->seqs[i]->get_no() == no) {
                         temp = seqs[i]->get_couples();
@@ -363,6 +403,7 @@ void seq_seq::change(child** children, int len) {
 
                 int new_no = rand() % this->size;
 
+                // Change with children of random classrooms
                 for (int i=0 ; i<this->seqs[pos]->get_size() ; i++) {
                     if (temp[i]->check(children[k])) {
                         int ran = rand() % (this->seqs[new_no]->get_size());
@@ -380,12 +421,13 @@ void seq_seq::change(child** children, int len) {
             }
 
         }
+        // if not consecutive
         else {
             // Loop for every child in children
-            // if not consecutive
             for (int k=0 ; k<len ; k++) {
                 no = children[k]->get_no();
 
+                // Get the couple** array of each child
                 for (int i=0 ; i<this->size ; i++) {
                     if (this->seqs[i]->get_no() == no) {
                         temp = seqs[i]->get_couples();
@@ -394,6 +436,8 @@ void seq_seq::change(child** children, int len) {
                     }
                 }
 
+                // Change with children of the next classroom
+                // (or the 1st if it's the last one)
                 for (int i=0 ; i<this->seqs[pos]->get_size() ; i++) {
                     if (temp[i]->check(children[k])) {
                         if (pos < this->size-1) {
@@ -403,9 +447,9 @@ void seq_seq::change(child** children, int len) {
                             temp[i]->change(chi, children[k]->get_gen());
                         }
                         else {
-                            int ran = rand() % (this->seqs[pos-1]->get_size());
+                            int ran = rand() % (this->seqs[0]->get_size());
                             // Don't care about gen we give, because children[k] != NULL
-                            child* chi = this->seqs[pos-1]->get_couples()[ran]->change(children[k], 'b');
+                            child* chi = this->seqs[0]->get_couples()[ran]->change(children[k], 'b');
                             temp[i]->change(chi, children[k]->get_gen());
                         }
 
@@ -419,9 +463,5 @@ void seq_seq::change(child** children, int len) {
                 this->seqs[pos]->print();
             }
         }
-
-
     }
 }
-
-
