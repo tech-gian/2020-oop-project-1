@@ -33,7 +33,6 @@ class student {
     // c -> classroom
     char position;
 
-
     public:
 
     // Constructor
@@ -64,7 +63,6 @@ class teacher {
 
     // Inside classroom or not
     bool in_class;
-
 
     public:
 
@@ -106,9 +104,9 @@ class classroom {
     ~classroom();
 
     // Entering function
-    bool enter(student& s);
+    bool enter(student* s);
     // Placing teacher function
-    void place(teacher& t);
+    void place(teacher* t);
     // Printing function
     void print(void) const;
 };
@@ -128,9 +126,9 @@ class corridor {
     ~corridor();
 
     // Entering function
-    bool enter(student& s);
+    bool enter(student* s);
     // Exiting function
-    student* exit(student& s);
+    student* exit(void);
     // Printing function
     void print(void) const;
 };
@@ -150,9 +148,9 @@ class yard {
     ~yard();
 
     // Entering function
-    bool enter(student& s);
+    bool enter(student* s);
     // Exiting function
-    student* exit(student& s);
+    student* exit(void);
     // Printing function
     void print(void) const;
 };
@@ -172,9 +170,9 @@ class stairs {
     ~stairs();
 
     // Entering function
-    bool enter(student& s);
+    bool enter(student* s);
     // Exiting function
-    student* exit(student& s);
+    student* exit(void);
     // Printing function
     void print(void) const;
 };
@@ -194,7 +192,7 @@ class flo {
     ~flo();
 
     // Entering function
-    bool enter(student& s);
+    bool enter(student* s);
     // Getting class
     classroom& get_class(int no) const { return *(this->clsrm[no]); }
     // Getting corridor
@@ -217,8 +215,11 @@ class school {
     // Destructor
     ~school();
 
-    // Entering function
-    bool enter(student& s);
+    // Entering function (for 1 student)
+    bool enter(student* s);
+    // Entering function (for multiple students)
+    // Return how many got in
+    int enter(student** students, int len);
     // Getting yard
     yard& get_yard(void) const { return *(this->syard); }
     // Getting stairs

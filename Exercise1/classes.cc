@@ -7,6 +7,8 @@
 #include "classes.h"
 
 
+
+//////////////////// 
 // Student Functions
 
 void student::print(void) const {
@@ -32,6 +34,7 @@ student::~student() {
 
 
 
+////////////////////
 // Teacher Functions
 
 void teacher::print(void) const {
@@ -56,6 +59,7 @@ teacher::~teacher() {
 
 
 
+//////////////////////
 // Classroom Functions
 
 void classroom::print(void) const {
@@ -91,36 +95,35 @@ classroom::~classroom() {
     cout << "A Classroom to be destroyed!" << endl;
 }
 
-
-bool classroom::enter(student& s) {
+bool classroom::enter(student* s) {
     // Returns false if teacher is inside
     // or classroom is full
     if (this->tchr != NULL) return false;
     if (st_no >= capacity) return false;
 
     // Add student to array
-    this->students[st_no] = &s;
+    this->students[st_no] = s;
     st_no++;
     // Change the position
-    s.set_pos('c');
+    s->set_pos('c');
 
-    s.print();
+    s->print();
     cout << "...enters classroom!" << endl;
     return true;
 }
 
-void classroom::place(teacher& t) {
+void classroom::place(teacher* t) {
     // Place teacher in classroom
-    this->tchr = &t;
+    this->tchr = t;
     // Change inside variable
-    t.set_in();
+    t->set_in();
 
     cout << "A Teacher to be placed!" << endl;
 }
 
 
 
-
+/////////////////////
 // Corridor Functions
 
 void corridor::print(void) const {
@@ -148,48 +151,39 @@ corridor::~corridor() {
     cout << "A Corridor to be destroyed!" << endl;
 }
 
-bool corridor::enter(student& s) {
+bool corridor::enter(student* s) {
     // If corridor is, return false
     if (st_no >= capacity) return false;
 
     // Add student to array
-    this->students[st_no] = &s;
+    this->students[st_no] = s;
     st_no++;
-    s.set_pos('f');
+    s->set_pos('f');
 
-    s.print();
+    s->print();
     cout << "...enters corridor!" << endl;
     return true;
 }
 
-student* corridor::exit(student& s) {
+student* corridor::exit(void) {
     // If corridor is empty, return NULL
     if (st_no == 0) return NULL;
 
-    // Find student in array
-    int pos;
-    for (int i=0 ; i<st_no ; i++) {
-        if (students[i] == &s) {
-            pos = i;
-            break;
-        }
-    }
-
-    // Print exiting student
-    this->students[pos]->print();
-    cout << "...exits corridor!" << endl;
-    // Change place with the last
-    student* temp = students[pos];
-    students[pos] = students[st_no-1];
-    students[st_no-1] = temp;
     this->st_no--;
+    // Print exiting student
+    this->students[st_no]->print();
+    cout << "...exits corridor!" << endl;
 
-    return this->students[st_no];
+    // Return the last student and replace it with NULL
+    student* temp = this->students[st_no];
+    this->students[st_no] = NULL;
+
+    return temp;
 }
 
 
 
-
+//////////////////
 // Floor Functions
 
 void flo::print(void) const {
@@ -203,7 +197,6 @@ void flo::print(void) const {
     // Print corridor
     cor->print();
 }
-
 
 flo::flo(int cls_cap, int cor_cap, int no) {
     this->no = no;
@@ -230,10 +223,10 @@ flo::~flo() {
     cout << "A Floor to be destroyed!" << endl;
 }
 
-bool flo::enter(student& s) {
+bool flo::enter(student* s) {
     // Enter student, if fit in corridor
     if (this->cor->enter(s) == true) {
-        s.print();
+        s->print();
         cout << "...enters floor!" << endl;
         return true;
     }
@@ -243,6 +236,7 @@ bool flo::enter(student& s) {
 
 
 
+///////////////////
 // Stairs Functions
 
 void stairs::print(void) const {
@@ -270,48 +264,40 @@ stairs::~stairs() {
     cout << "A Stairs to be destroyed!" << endl;
 }
 
-bool stairs::enter(student& s) {
+bool stairs::enter(student* s) {
     // If stairs are full, return false
     if (st_no >= capacity) return false;
 
     // Add student to array
-    this->students[st_no] = &s;
+    this->students[st_no] = s;
     st_no++;
-    s.set_pos('s');
+    s->set_pos('s');
 
-    s.print();
+    s->print();
     cout << "...enters stairs!" << endl;
     return true;
 }
 
-student* stairs::exit(student& s) {
+student* stairs::exit(void) {
     // If stairs are empty, return NULL
     if (st_no == 0) return NULL;
 
-    // Find student
-    int pos;
-    for (int i=0 ; i<st_no ; i++) {
-        if (students[i] == &s) {
-            pos = i;
-            break;
-        }
-    }
-
-    // Print exiting student
-    this->students[pos]->print();
-    cout << "...exits stairs!" << endl;
-    // Change it with the last
-    student* temp = students[pos];
-    students[pos] = students[st_no-1];
-    students[st_no-1] = temp;
     this->st_no--;
 
-    return this->students[st_no];
+    // Print exiting student
+    this->students[st_no]->print();
+    cout << "...exits stairs!" << endl;
+
+    // Return the last student and replace it with NULL
+    student* temp = this->students[st_no];
+    this->students[st_no] = NULL;
+
+    return temp;
 }
 
 
 
-
+/////////////////
 // Yard Functions
 
 void yard::print(void) const {
@@ -339,48 +325,40 @@ yard::~yard() {
     cout << "A Yard to be destroyed!" << endl;
 }
 
-bool yard::enter(student& s) {
+bool yard::enter(student* s) {
     // If yard is full, return false
     if (st_no >= capacity) return false;
 
     // Add student
-    this->students[st_no] = &s;
+    this->students[st_no] = s;
     st_no++;
-    s.set_pos('y');
+    s->set_pos('y');
 
-    s.print();
+    s->print();
     cout << "...enters schoolyard!" << endl;
     return true;
 }
 
-student* yard::exit(student& s) {
+student* yard::exit(void) {
     // If yard is empty, return NULL
     if (st_no == 0) return NULL;
 
-    // Find student
-    int pos;
-    for (int i=0 ; i<st_no ; i++) {
-        if (students[i] == &s) {
-            pos = i;
-            break;
-        }
-    }
-
-    // Print exiting student
-    this->students[pos]->print();
-    cout << "...exits schoolyard!" << endl;
-    // Change it with the last
-    student* temp = students[pos];
-    students[pos] = students[st_no-1];
-    students[st_no-1] = temp;
     this->st_no--;
 
-    return this->students[st_no];
+    // Print exiting student
+    this->students[st_no]->print();
+    cout << "...exits schoolyard!" << endl;
+
+    // Return the last student and replace it with NULL
+    student* temp = this->students[st_no];
+    this->students[st_no] = NULL;
+
+    return temp;
 }
 
 
 
-
+///////////////////
 // School Functions
 
 void school::print(void) const {
@@ -422,13 +400,28 @@ school::~school() {
     cout << "A School to be destroyed!" << endl;
 }
 
-bool school::enter(student& s) {
+bool school::enter(student* s) {
     // If student fit in yard, enter it
     if (this->syard->enter(s) == true) {
-        s.print();
+        s->print();
         cout << "...enters school!" << endl;
         return true;
     }
 
     return false;
+}
+
+int school::enter(student** students, int len) {
+    int counter = 0;
+
+    // Insert as many as fit
+    for (int i=0 ; i<len ; i++) {
+        if (!this->enter(students[i])) {
+            break;
+        }
+        counter++;
+    }
+
+    // Return how many got in
+    return counter;
 }
