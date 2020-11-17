@@ -61,9 +61,6 @@ class teacher {
     int floor_no;
     int class_no;
 
-    // Inside classroom or not
-    bool in_class;
-
     public:
 
     // Constructor
@@ -71,10 +68,6 @@ class teacher {
     // Destructor
     ~teacher();
 
-    // Setting teacher in class
-    void set_in(void) { this->in_class = true; }
-    // Getting teacher in class
-    bool get_in(void) const { return this->in_class; }
     // Getting flo_no
     int get_flo(void) const { return this->floor_no; }
     // Getting cls_no
@@ -103,10 +96,12 @@ class classroom {
     // Destructor
     ~classroom();
 
+    // Returning teacher
+    teacher* get_tchr(void) const { return this->tchr; }
+    // Setting teacher
+    void set_tchr(teacher* t) { this->tchr = t; }
     // Entering function
     bool enter(student* s);
-    // Placing teacher function
-    void place(teacher* t);
     // Printing function
     void print(void) const;
 };
@@ -193,10 +188,8 @@ class flo {
 
     // Entering function
     bool enter(student* s);
-    // Getting class
-    classroom& get_class(int no) const { return *(this->clsrm[no]); }
-    // Getting corridor
-    corridor& get_cor(void) const { return *(this->cor); }
+    // Placing teacher function
+    bool place(teacher* t);
     // Printing function
     void print(void) const;
 };
@@ -215,17 +208,13 @@ class school {
     // Destructor
     ~school();
 
+    // Placing teacher function
+    bool place(teacher* t);
     // Entering function (for 1 student)
     bool enter(student* s);
     // Entering function (for multiple students)
     // Return how many got in
     int enter(student** students, int len);
-    // Getting yard
-    yard& get_yard(void) const { return *(this->syard); }
-    // Getting stairs
-    stairs& get_stairs(void) const { return *(this->sstairs); }
-    // Getting floor
-    flo& get_flo(int no) const {return *(this->sflo[no]); }
     // Printing Function
     void print(void) const;
 };

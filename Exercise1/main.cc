@@ -60,34 +60,7 @@ int main(int argc, char* argv[]) {
             student* s = students[i];
 
             // Check if student fits in school
-            if (scl.enter(s)) {
-                s = scl.get_yard().exit();
-
-                // Check if student fits in stairs
-                if (scl.get_stairs().enter(s)) {
-                    s = scl.get_stairs().exit();
-
-                    // Check if student fits in floor (corridor)
-                    if (scl.get_flo(s->get_flo()).enter(s)) {
-                        flo* temp = &(scl.get_flo(s->get_flo()));
-                        s = temp->get_cor().exit();
-
-                        // Check if student fits in classroom
-                        if (!temp->get_class(s->get_cls()).enter(s)) {
-                            temp->enter(s);
-                        }
-                    }
-                    // If doesn't fit in floor, get him in stairs
-                    else {
-                        scl.get_stairs().enter(s);
-                    }
-                }
-                // If doesn't fit in stairs, get him in schoolyard
-                else {
-                    scl.enter(s);
-                }
-            }
-            else {
+            if (!scl.enter(s)) {
                 // Finish the simulation
                 // No more fit in school
                 cout << "The school is full!" << endl;
@@ -102,9 +75,11 @@ int main(int argc, char* argv[]) {
             int pos = rand() % tcr_size;
             teacher* t = teachers[pos];
 
-            // If teacher isn't in the classroom
-            if (!t->get_in()) {
-                scl.get_flo(t->get_flo()).get_class(t->get_cls()).place(t);
+            // If teacher is already in the classroom
+            // print that statement
+            if (!scl.place(t)) {
+                t->print();
+                cout << "Already in classroom" << endl;
             }
         }
     }

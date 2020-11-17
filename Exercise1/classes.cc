@@ -45,8 +45,6 @@ teacher::teacher(string name, int floor_no, int class_no) {
     this->name = name;
     this->floor_no = floor_no;
     this->class_no = class_no;
-    // Initialize inside_class to false
-    this->in_class = false;
 
     cout << "A New Teacher has been created!" << endl;
     cout << this->name << " " << this->class_no << endl;
@@ -110,15 +108,6 @@ bool classroom::enter(student* s) {
     s->print();
     cout << "...enters classroom!" << endl;
     return true;
-}
-
-void classroom::place(teacher* t) {
-    // Place teacher in classroom
-    this->tchr = t;
-    // Change inside variable
-    t->set_in();
-
-    cout << "A Teacher to be placed!" << endl;
 }
 
 
@@ -228,6 +217,24 @@ bool flo::enter(student* s) {
     if (this->cor->enter(s) == true) {
         s->print();
         cout << "...enters floor!" << endl;
+
+        // Try to get student in classroom
+        s = this->cor->exit();
+        if (!this->clsrm[s->get_cls()]->enter(s)) {
+            this->cor->enter(s);
+        }
+        return true;
+    }
+
+    return false;
+}
+
+bool flo::place(teacher* t) {
+    // If teacher isn't placed already
+    if (this->clsrm[t->get_cls()]->get_tchr() != NULL) {
+        this->clsrm[t->get_cls()]->set_tchr(t);
+
+        cout << "A Teacher to be placed!" << endl;
         return true;
     }
 
@@ -405,6 +412,21 @@ bool school::enter(student* s) {
     if (this->syard->enter(s) == true) {
         s->print();
         cout << "...enters school!" << endl;
+
+        // Try to get student to stairs
+        s = this->syard->exit();
+        if (this->sstairs->enter(s)) {
+
+            // Try to get student to floor (corridor)
+            s = this->sstairs->exit();
+            if (!this->sflo[s->get_flo()]->enter(s)) {
+                this->sstairs->enter(s);
+            }
+        }
+        else {
+            this->syard->enter(s);
+        }
+
         return true;
     }
 
@@ -424,4 +446,9 @@ int school::enter(student** students, int len) {
 
     // Return how many got in
     return counter;
+}
+
+bool school::place(teacher* t) {
+    // Return bool of flo->place
+    return this->sflo[t->get_flo()]->place(t);
 }
