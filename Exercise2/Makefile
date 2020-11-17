@@ -5,7 +5,7 @@
 CC = g++
 
 # Compile options
-CFLAGS = -Wall -Werror
+CFLAGS = -Wall -Werror -g
 
 # Files .o
 OBJS = main.o classes.o
