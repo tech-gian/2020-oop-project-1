@@ -295,11 +295,13 @@ void seq_seq::print(void) const {
         this->seqs[i]->print();
 
         // Print Message for disorder
-        double dis = (double)this->seqs[i]->get_dis() / ((double)this->seqs[i]->get_size() * 2.0);
-        if (dis < Tquiet) {
+        // (*2.0 because we want the size of children, not the size of couples)
+        double dis = (double)this->seqs[i]->get_dis();
+        double siz =  ((double)this->seqs[i]->get_size() * 2.0);
+        if (dis < Tquiet * siz) {
             cout << "What a quiet class!" << endl;
         }
-        else if (dis > Tmessy) {
+        else if (dis > Tmessy * siz) {
             cout << "What a mess!" << endl;
         }
         else {
