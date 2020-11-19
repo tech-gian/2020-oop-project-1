@@ -4,7 +4,7 @@
 
 
 // Header file included
-#include "classes.h"
+#include "School.h"
 
 
 

@@ -1,21 +1,22 @@
 # paths
-MODULES =
-INCLUDE =
+MODULES = ../../modules
+INCLUDE = ../../include
+INPUT   = ../../input
 
 # compiler
 CC = g++
 
 # Compile options
-GXXFLAGS = -Wall -Werror -g
+CXXFLAGS = -Wall -Werror -g -I$(INCLUDE)
 
 # Files .o
-OBJS = main.o classes.o
+OBJS = main.o $(MODULES)/Sequence.o
 
 # Executable file
 EXEC = main
 
 # Arguments
-ARGS = 3 10 0.3 0.7 < input.txt
+ARGS = 3 10 0.3 0.7 < $(INPUT)/input_ex2.txt
 
 $(EXEC): $(OBJS)
 	$(CC) $(OBJS) -o $(EXEC)

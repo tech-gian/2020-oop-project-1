@@ -4,7 +4,7 @@
 
 
 // Header file include
-#include "classes.h"
+#include "Sequence.h"
 
 
 int main(int argc, char* argv[]) {
@@ -84,7 +84,7 @@ int main(int argc, char* argv[]) {
         if (end < start) {
             int temp = start;
             start = end;
-            end = start;
+            end = temp;
         }
 
         // Change the children, chosen in random
