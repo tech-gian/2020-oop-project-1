@@ -1,11 +1,12 @@
 # paths
-
+MODULES =
+INCLUDE =
 
 # compiler
 CC = g++
 
 # Compile options
-CFLAGS = -Wall -Werror -g
+GXXFLAGS = -Wall -Werror -g
 
 # Files .o
 OBJS = main.o classes.o
