@@ -104,7 +104,7 @@ int main(int argc, char* argv[]) {
     delete[] children;
 
     for (int i=0 ; i<K ; i++) {
-        delete chi_seq[i];
+        delete[] chi_seq[i];
     }
     delete[] chi_seq;
 
