@@ -52,8 +52,8 @@ int main(int argc, char* argv[]) {
 
 
     int i = 0;
-    // Finish the simulation
-    // All students got in school
+    // Finish the simulation when
+    // all students got in school
     while (i < st_size) {
         // Random pick for student
         if (rand() % 2 == 0) {
@@ -61,8 +61,8 @@ int main(int argc, char* argv[]) {
 
             // Check if student fits in school
             if (!scl.enter(s)) {
-                // Finish the simulation
-                // No more fit in school
+                // Finish the simulation when
+                // no more fit in school
                 cout << "The school is full!" << endl;
                 break;
             }
